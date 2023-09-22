@@ -1,26 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+  "compilerOptions":
+  {
+    "module": "commonjs",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "esModuleInterop": true,
+    "target": "es6",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "allowJs": true, // source code can contains ts and js files
+    "noImplicitAny": true, // checks all declared function arguments, they should all have types or at least any as a type.
+    "lib": [
+      "es2015",
+      "es2020",
+      "dom"
+    ],
+    "paths":
+    {
+      "*": ["node_modules/*"]
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src/**/*"]
 }
