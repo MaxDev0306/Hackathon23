@@ -10,7 +10,7 @@ export interface ROUND {
 	id: string,
 	players: Player[],
 	overview: string[],
-	forcedSection: any,
+	forcedSection: null|number,
 	board: Array<string | Array<string>>,
 	log: LogEntry[],
 	type: string,

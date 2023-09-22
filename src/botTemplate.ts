@@ -1,11 +1,14 @@
 import {io} from 'socket.io-client';
 import {INIT, RESULT, ROUND} from './Interfaces';
+import {doTurn} from "./maximsBotLogic";
 
 
 const SECRET = 'baa3ca8b-1c38-4b29-9b04-f354c79c9ee5';
 const socket = io('https://games.uhno.de', {            // Server ist "games.uhno.de"
 	transports: ['websocket']                             // wichtig: aktuell werden nur Websockets unterstützt
 });
+
+const turns: number = 0;
 
 socket.on('connect', () => {
 	console.log('connected')
@@ -33,18 +36,16 @@ socket.on('data', (data, callback) => {
 	}
 });
 const init = (data: INIT) => {
-	// TODO: irgendwas initialisieren?
-	console.log('INIT')
-	console.log(data);
+	/*console.log('INIT')
+	console.log(data);*/
 };
 const result = (data: RESULT) => {
-	// TODO: irgendwas aufräumen?
-	console.log('RESULT')
-	console.log(data);
+	/*console.log('RESULT')
+	console.log(data);*/
+
 };
 const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
-	// TODO: die bestmögliche Antwort liefern.
-	// Koordinaten [0,0]-[8,8]?
-	console.log('ROUND')
-	callback([0,8]);
+	const turn = doTurn(data);
+	console.log(turn)
+	callback(turn);
 };
