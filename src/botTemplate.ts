@@ -38,6 +38,7 @@ const init = (data: INIT) => {
 };
 const result = (data: RESULT) => {
     console.log(data.log);
+    console.log(data.self);
 
 };
 const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
