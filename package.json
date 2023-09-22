@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "socket.io-client": "^4.7.2"
+    "axios": "^1.5.0",
+    "socket.io-client": "^4.7.2",
+    "tic-tac-toe-ai-engine": "^1.0.9"
   },
   "devDependencies": {
     "typescript": "^4.6.3"

@@ -1,5 +1,5 @@
 import {io} from 'socket.io-client';
-import {INIT, RESULT, ROUND} from './Interfaces';
+import {INIT, Player, RESULT, ROUND} from './Interfaces';
 import {doTurn} from "./maximsBotLogic";
 
 
@@ -8,7 +8,8 @@ const socket = io('https://games.uhno.de', {            // Server ist "games.uhn
 	transports: ['websocket']                             // wichtig: aktuell werden nur Websockets unterstützt
 });
 
-const turns: number = 0;
+let ratio = 0;
+let playedGames = 0;
 
 socket.on('connect', () => {
 	console.log('connected')
@@ -36,16 +37,37 @@ socket.on('data', (data, callback) => {
 	}
 });
 const init = (data: INIT) => {
-	/*console.log('INIT')
-	console.log(data);*/
+	//console.log('INIT')
 };
 const result = (data: RESULT) => {
+	let me: Player|null = null;
+	for (const player of data.players) {
+		if (player.id == data.self) {
+			me = player;
+		}
+	}
+	playedGames++;
 	/*console.log('RESULT')
 	console.log(data);*/
+	if (me) {
+		switch (me.score) {
+			case 0:
+				ratio--;
+				console.log('LOST')
+				break
+			case 1:
+				ratio++;
+				console.log('WON')
+				break
+			default:
+				console.log('SOMETHING WENT WRONG!')
+		}
+	}
 
+	console.log(ratio)
+	console.log(playedGames)
 };
 const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
 	const turn = doTurn(data);
-	console.log(turn)
 	callback(turn);
 };

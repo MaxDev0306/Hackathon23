@@ -1,40 +1,39 @@
 import {ROUND} from './Interfaces';
-
+//@ts-ignore;
+import ticTacToeAiEngine from "tic-tac-toe-ai-engine";
 export const doTurn = (data: ROUND) => {
 	const turn: [section: number, field: number] = [0,0];
 
 	if (data.forcedSection) {
 		turn[0] = data.forcedSection;
 	} else {
-		turn[0] = chooseSection(data);
+		turn[0] = chooseTurn(data, data.overview);
 	}
+	turn[1] = chooseTurn(data, data.board[turn[0]])
+	return turn;
+}
 
+const chooseTurn = (data: ROUND, gameState: string[]) => {
 	const availableFields: number[] = [];
+	const board = data.overview
 
-	for (let i = 0; i < data.board[turn[0]].length; i++) {
+	for (let i = 0; i < board.length; i++) {
 		if (data.overview[i] === '') {
 			availableFields.push(i);
 		}
 	}
 
-	turn[1] = chooseField(availableFields);
-
-	return turn;
-}
-const chooseSection = (data: ROUND) => {
-	const availableSections: number[] = [];
-
-	for (let i = 0; i < data.overview.length; i++) {
-		if (data.overview[i] === '') {
-			availableSections.push(i);
+	const estimatedTurn: {winner: string, depth: number, nextBestGameState: string[]} = ticTacToeAiEngine.computeMove(gameState);
+	for (let i = 0; i < 9; i++) {
+		if (gameState[i] !== estimatedTurn.nextBestGameState[i]) {
+			return i;
 		}
 	}
 
-	return chooseField(availableSections);
+	console.log('SOMETHING WENT WRONG')
+	return availableFields[0];
 }
 
-const chooseField = (availableFields: number[]) => {
-	const randomFieldIndex = Math.floor(Math.random() * availableFields.length);
+function gigaChadLogic(board: string[][]) {
 
-	return availableFields[randomFieldIndex];
 }
