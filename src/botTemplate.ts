@@ -37,24 +37,30 @@ const init = (data: INIT) => {
     symbol = whoAmI(data);
 };
 const result = (data: RESULT) => {
-    console.log(data);
-    // TODO: irgendwas aufräumen?
+    console.log(data.log);
+
 };
 const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
     symbol = whoAmI(data);
     const enemySymbol = symbol === "X" ? "O" : "X";
     if (data.forcedSection === null) {
-        callback([4, 4]);
+        const emptyFields: number[] = data.overview.reduce((fields: number[], value: string, index: number) => {
+            if (value === '') {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
+        callback([emptyFields[0], logic(data.board, emptyFields[0], enemySymbol, symbol)])
     } else {
         if (data.overview[data.forcedSection] !== '') {
-            const emptyIndices: number[] = data.overview.reduce((indices: number[], value: string, index: number) => {
+            const emptyFields: number[] = data.overview.reduce((fields: number[], value: string, index: number) => {
                 if (value === '') {
-                    indices.push(index);
+                    fields.push(index);
                 }
-                return indices;
+                return fields;
             }, []);
-            callback([emptyIndices[0], logic(data)]);
+            callback([emptyFields[0], logic(data.board, data.forcedSection, enemySymbol, symbol)]);
         }
-        callback([data.forcedSection, logic(data)]);
+        callback([data.forcedSection, logic(data.board, data.forcedSection, enemySymbol, symbol)]);
     }
-};
+}
