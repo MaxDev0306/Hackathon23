@@ -34,12 +34,17 @@ socket.on('data', (data, callback) => {
 });
 const init = (data: INIT) => {
 	// TODO: irgendwas initialisieren?
+	console.log('INIT')
+	console.log(data);
 };
 const result = (data: RESULT) => {
 	// TODO: irgendwas aufräumen?
+	console.log('RESULT')
+	console.log(data);
 };
-const round = (data: ROUND, callback: () => {}) => {
+const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
 	// TODO: die bestmögliche Antwort liefern.
 	// Koordinaten [0,0]-[8,8]?
-	callback();
+	console.log('ROUND')
+	callback([0,8]);
 };
