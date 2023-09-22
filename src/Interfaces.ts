@@ -11,7 +11,7 @@ export interface ROUND {
 	players: Player[],
 	overview: string[],
 	forcedSection: any,
-	board: Array<string | Array<string>>,
+	board: Array<Array<string>>,
 	log: LogEntry[],
 	type: string,
 	self: string
@@ -20,7 +20,7 @@ export interface RESULT {
 	id: string,
 	players: Player[],
 	overview: string [],
-	board: Array<string | Array<string>>,
+	board: Array<Array<string>>,
 	log: LogEntry[],
 	type: string,
 	self: string
