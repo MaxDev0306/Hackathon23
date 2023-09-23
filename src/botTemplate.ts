@@ -2,7 +2,7 @@ import {INIT, RESULT, ROUND} from './Interfaces';
 import {io} from "socket.io-client";
 import {logic, whoAmI} from "./logic";
 
-const SECRET = 'a841b604-5ad5-4d6c-9178-68750c7a8ee1';
+const SECRET = '7a20fc79-f37c-4240-b9e5-de6117a82315';
 const socket = io('https://games.uhno.de', {            // Server ist "games.uhno.de"
     transports: ['websocket']                             // wichtig: aktuell werden nur Websockets unterstützt
 });
@@ -51,7 +51,7 @@ const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => 
             }
             return fields;
         }, []);
-        callback([emptyFields[0], logic(data.board, emptyFields[0], enemySymbol, symbol)])
+        callback([emptyFields[0], logic(data.board,data.overview, emptyFields[0], enemySymbol, symbol)])
     } else {
         if (data.overview[data.forcedSection] !== '') {
             const emptyFields: number[] = data.overview.reduce((fields: number[], value: string, index: number) => {
@@ -60,8 +60,8 @@ const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => 
                 }
                 return fields;
             }, []);
-            callback([emptyFields[0], logic(data.board, data.forcedSection, enemySymbol, symbol)]);
+            callback([emptyFields[0], logic(data.board,data.overview, data.forcedSection, enemySymbol, symbol)]);
         }
-        callback([data.forcedSection, logic(data.board, data.forcedSection, enemySymbol, symbol)]);
+        callback([data.forcedSection, logic(data.board,data.overview, data.forcedSection, enemySymbol, symbol)]);
     }
 }

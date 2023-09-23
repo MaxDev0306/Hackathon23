@@ -1,40 +1,80 @@
 import {INIT, Player, ROUND} from "./Interfaces";
 
-export function logic(board:any, forcedSection: number, enemySymbol: string, ourSymbol: string) {
+export function logic(board:any,overview:any, forcedSection: number, enemySymbol: string, ourSymbol: string) {
     const currentBoard = board[forcedSection];
-    const emptyFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
+    const emptyOverviewFields: number[] = overview.reduce((fields: number[], value: string, index: number) => {
         if (value === '') {
             fields.push(index);
         }
         return fields;
     }, []);
+        const emptyFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
+            if (value === '') {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
+        const ourFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
+            if (value === ourSymbol) {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
 
-    const ourFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
-        if (value === ourSymbol) {
-            fields.push(index);
+        const enemyFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
+            if (value === enemySymbol) {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
+        const ouroverviewFields: number[] = overview.reduce((fields: number[], value: string, index: number) => {
+            if (value === ourSymbol) {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
+
+        const enemyoverviewFields: number[] = overview.reduce((fields: number[], value: string, index: number) => {
+            if (value === enemySymbol) {
+                fields.push(index);
+            }
+            return fields;
+        }, []);
+
+        const checkWin = check(ourFields, emptyFields);
+        const checkBlock = check(enemyFields, emptyFields);
+
+        const checkOverviewWin = check(ouroverviewFields, emptyOverviewFields);
+        const checkOverviewBlock = check(enemyoverviewFields, emptyOverviewFields);
+
+        if (checkWin) {
+            return checkWin;
+        } else if (checkBlock) {
+            return checkBlock;
+        } else if (checkOverviewWin && emptyFields.includes(checkOverviewWin)) {
+            return checkOverviewWin;
+        } else if (checkOverviewBlock && emptyFields.includes(checkOverviewBlock)) {
+            return checkOverviewBlock;
         }
-        return fields;
-    }, []);
-
-    const enemyFields: number[] = currentBoard.reduce((fields: number[], value: string, index: number) => {
-        if (value === enemySymbol) {
-            fields.push(index);
+        if (emptyFields.includes(0)) {
+            return 0;
         }
-        return fields;
-    }, []);
-
-    const checkWin = check(ourFields, emptyFields);
-    const checkBlock = check(enemyFields, emptyFields);
-
-    if (checkWin) {
-        return checkWin;
-    } else if (checkBlock) {
-        return checkBlock
+        let options = [];
+    if (emptyFields.includes(2)) {
+        options.push(2);
+    }if (emptyFields.includes(6)) {
+        options.push(6);
+    }
+    if (emptyFields.includes(8)) {
+        options.push(8);
+    }
+    if(options.length > 0){
+        return options[Math.floor(Math.random() * options.length)]
     }
     if (emptyFields.includes(4)) {
-        return 4;
+        options.push(4);
     }
-    return emptyFields[0];
+        return emptyFields[Math.floor(Math.random() * emptyFields.length)];
 }
 
 export function whoAmI(data: INIT | ROUND) {
@@ -48,6 +88,7 @@ export function whoAmI(data: INIT | ROUND) {
 }
 
 function check(field: number[], emptyFields: number[]) {
+
     if (field.includes(0) && field.includes(1) && emptyFields.includes(2)) {
         return 2;
     }
@@ -58,10 +99,6 @@ function check(field: number[], emptyFields: number[]) {
 
     if (field.includes(0) && field.includes(2) && emptyFields.includes(1)) {
         return 1;
-    }
-
-    if (field.includes(0) && field.includes(1) && emptyFields.includes(2)) {
-        return 2;
     }
 
     if (field.includes(3) && field.includes(4) && emptyFields.includes(5)) {
@@ -142,6 +179,43 @@ function check(field: number[], emptyFields: number[]) {
 
     if (field.includes(2) && field.includes(6) && emptyFields.includes(4)) {
         return 4;
+    }
+
+    if (field.includes(0) && emptyFields.includes(8)) {
+        return 8;
+    }
+    if (field.includes(0) && emptyFields.includes(6)) {
+        return 6;
+    }
+    if (field.includes(0) && emptyFields.includes(2)) {
+        return 2;
+    }
+    if (field.includes(2) && emptyFields.includes(0)) {
+        return 0;
+    }
+    if (field.includes(2) && emptyFields.includes(6)) {
+        return 6;
+    }
+    if (field.includes(2) && emptyFields.includes(8)) {
+        return 8;
+    }
+    if (field.includes(6) && emptyFields.includes(8)) {
+        return 8;
+    }
+    if (field.includes(6) && emptyFields.includes(0)) {
+        return 0;
+    }
+    if (field.includes(6) && emptyFields.includes(2)) {
+        return 2;
+    }
+    if (field.includes(8) && emptyFields.includes(6)) {
+        return 6;
+    }
+    if (field.includes(8) && emptyFields.includes(0)) {
+        return 0;
+    }
+    if (field.includes(8) && emptyFields.includes(2)) {
+        return 2;
     }
     return null;
 }
