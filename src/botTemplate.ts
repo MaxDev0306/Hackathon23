@@ -8,7 +8,7 @@ const socket = io('https://games.uhno.de', {            // Server ist "games.uhn
 	transports: ['websocket']                             // wichtig: aktuell werden nur Websockets unterstützt
 });
 
-let ratio = 0;
+let wins = 0;
 let playedGames = 0;
 
 socket.on('connect', () => {
@@ -40,6 +40,16 @@ const init = (data: INIT) => {
 	//console.log('INIT')
 };
 const result = (data: RESULT) => {
+
+	for (const log of data.log) {
+		if (log.player === data.self && log.error) {
+			console.log('---ERROR---')
+			console.log(log.error)
+			console.log(log.move)
+			console.log('---ERROR---')
+		}
+	}
+
 	let me: Player|null = null;
 	for (const player of data.players) {
 		if (player.id == data.self) {
@@ -52,20 +62,23 @@ const result = (data: RESULT) => {
 	if (me) {
 		switch (me.score) {
 			case 0:
-				ratio--;
+				console.log('Game Id: ' + data.id)
 				console.log('LOST')
 				break
 			case 1:
-				ratio++;
+				wins++;
+				console.log('Game Id: ' + data.id)
 				console.log('WON')
 				break
 			default:
+				console.log('Game Id: ' + data.id)
 				console.log('SOMETHING WENT WRONG!')
 		}
 	}
 
-	console.log(ratio)
-	console.log(playedGames)
+	console.log('Total winning rate: ' + parseFloat(((wins / playedGames) * 100).toFixed(2)) + '%')
+	console.log('Total played games: ' + playedGames)
+
 };
 const round = (data: ROUND, callback: (turn: [cord1: number, cord2: number]) => void) => {
 	const turn = doTurn(data);

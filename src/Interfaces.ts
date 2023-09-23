@@ -33,5 +33,6 @@ export interface Player {
 }
 export interface LogEntry{
 	player: string,
-	move: number[]
+	move: number[],
+	error?: string
 }
