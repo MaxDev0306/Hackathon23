@@ -3,7 +3,7 @@ import {INIT, Player, RESULT, ROUND} from './Interfaces';
 import {doTurn} from "./maximsBotLogic";
 
 
-const SECRET = 'baa3ca8b-1c38-4b29-9b04-f354c79c9ee5';
+const SECRET = 'c238b5b4-677a-479e-872d-0d00dcf1e1b7';
 const socket = io('https://games.uhno.de', {            // Server ist "games.uhno.de"
 	transports: ['websocket']                             // wichtig: aktuell werden nur Websockets unterstützt
 });

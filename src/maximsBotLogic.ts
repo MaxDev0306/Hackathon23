@@ -30,7 +30,11 @@ export const doTurn = (data: ROUND) => {
 
 
 	if(playerSymbol) {
-		turn[0] = chooseSection(data, playerSymbol)!;
+		if (data.forcedSection !== null) {
+			turn[0] = data.forcedSection
+		} else {
+			turn[0] = chooseSection(data, playerSymbol)!;
+		}
 		turn[1] = chooseTurn(data.board[turn[0]], playerSymbol, emptyFields[randomField], gameID)
 		return turn;
 	}
@@ -81,7 +85,7 @@ const chooseSection = (data: ROUND, playerSymbol: string) => {
 	let section = data.forcedSection;
 	const freeSections: number[] = [];
 
-	if (!data.forcedSection) {
+	if (section === null) {
 
 		for (let i = 0; i < data.overview.length; i++) {
 			if (data.overview[i] === '') {
